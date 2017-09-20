@@ -80,6 +80,80 @@ void clpState::update_supports(const AABB* block,
         }
 }
 
+int clpState::get_best_cut(clpState* s){
+
+	long cut=0;
+	set<int> promising_cuts;
+	//se recorre la lista de bloques del contenedor
+	//y se obtienen todos los cortes
+	const AABB* b=&s->cont.blocks->top();
+	while(b){
+		promising_cuts.insert(b->getXmin());
+		promising_cuts.insert(b->getXmax());
+		if(s->cont.blocks->has_next())
+			b=&s->cont.blocks->next();
+		else b=NULL;
+	}
+
+
+	double best_cut=0;
+	double best_density= 1.0;
+
+	for(int cut : promising_cuts){
+		//list<const AABB*> blocks = s->cont.blocks->get_bisected_objects(cut);
+
+		list<const AABB*> blocks = s->cont.blocks->get_intersected_objects(AABB(0,0,0,cut,cont.getW(),cont.getH()));
+
+
+		double vol_blocks = 0;
+		for(const AABB* block : blocks){
+			if(block->getXmax() > cut ){
+				double frac = (double) cut - block->getXmin() / (double) block->getL();
+				if(frac < 0.5 && frac > 0.0){
+					vol_blocks += frac * (double) block->getOccupiedVolume();
+				}
+			}
+			vol_blocks += (double) block->getOccupiedVolume();
+		}
+
+		double vol_sector = cut * cont.getW() * cont.getH();
+
+		if( vol_blocks / vol_sector < best_density){
+			best_density = vol_blocks / vol_sector ;
+			best_cut = cut;
+		}
+	}
+
+	set<int>::reverse_iterator rit ;
+	for(rit=promising_cuts.rbegin(); rit!=promising_cuts.rend();rit++){
+		int cut = *rit;
+
+		list<const AABB*> blocks = s->cont.blocks->get_intersected_objects(AABB(0,0,cut,cont.getL(),cont.getW(),cont.getH()));
+
+
+		double vol_blocks = 0;
+		for(const AABB* block : blocks){
+			if(block->getXmin() < cut ){
+				double frac = (double) block->getXmax() - cut  / (double) block->getL();
+				if(frac < 0.5 && frac > 0.0){
+					vol_blocks += frac * (double) block->getOccupiedVolume();
+				}
+			}
+			vol_blocks += (double) block->getOccupiedVolume();
+		}
+
+		double vol_sector = (cont.getL()-cut) * cont.getW() * cont.getH();
+
+		if( vol_blocks / vol_sector < best_density){
+			best_density = vol_blocks / vol_sector ;
+			best_cut = -cut;
+		}
+	}
+
+	return best_cut;
+}
+
+
 State* clpState::create_neighbor(State* s0){
 	clpState* s1=(clpState*) s0->copy();
 

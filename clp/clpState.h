@@ -129,6 +129,12 @@ private:
 	//menor dimension de las cajas restantes
 	Vector3 mindim;
 
+	/*
+	 * Retorna un x en donde deberia dividirse la caja
+	 */
+	int get_best_cut(clpState* s);
+
+
 
 };
 
