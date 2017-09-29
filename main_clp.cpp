@@ -111,11 +111,11 @@ int main(int argc, char** argv){
     double eval = 1-bsg->run(s_copy, max_time, begin_time) ;
 	cout << global::n_eval << endl;
 	cout << eval << endl;
-/*
- *
+
+	/*
 	const AABB* b = &dynamic_cast<const clpState*>(gr->get_best_state())->cont.blocks->top();
 	while(dynamic_cast<const clpState*>(gr->get_best_state())->cont.blocks->has_next()){
-		cout << *b << ":" << b->getVolume() << "(" << b->getOccupiedVolume() << ")" << endl;
+		cout << b->getDimensions() << ":" << b->getVolume() << "(" << b->getOccupiedVolume() << ")" << endl;
 		b = &dynamic_cast<const clpState*>(gr->get_best_state())->cont.blocks->next();
 	}
 */

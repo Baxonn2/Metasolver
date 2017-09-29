@@ -274,7 +274,7 @@ public:
 
   bool operator() (const KdNode* a, const KdNode* b) const
   {
-    return (a->ub > b->ub);
+    return (a->ub > b->ub) ;
   }
 };
 

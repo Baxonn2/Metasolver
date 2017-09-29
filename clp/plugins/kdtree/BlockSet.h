@@ -59,6 +59,9 @@ public:
 
 
 	virtual double compute_ub(const long* minpoint, const long* maxpoint, long maxvol) const{
+		//
+		//return 500*500*500;
+		return maxvol;
 
 		long surface=0.0;
 		double cs=0.5;
@@ -180,7 +183,7 @@ public:
 
 		KdNode::nn=0;
 
-		kdtree_root->search(minpoint, maxpoint, 3, best_solutions, n) ;
+		kdtree_root->search(minpoint, maxpoint, 3, best_solutions, n);
 
 		//best_solutions.clear();
 
@@ -193,9 +196,15 @@ public:
 
 		multimap<long, const KdData*>::iterator it=best_solutions.begin();
 		for(;it!=best_solutions.end();it++){
-			b.insert(b.end(),
+
+			for(auto block : dynamic_cast<const kd_block*>(it->second)->b){
+				if(is_constructible(state, *block.second ))
+					b.push_back(block);
+				/*
+				b.insert(b.end(),
 					dynamic_cast<const kd_block*>(it->second)->b.begin(),
-					dynamic_cast<const kd_block*>(it->second)->b.end());
+					dynamic_cast<const kd_block*>(it->second)->b.end());*/
+			}
 
 		}
 		b.sort();

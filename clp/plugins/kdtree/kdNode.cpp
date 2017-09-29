@@ -10,6 +10,7 @@
 #include <map>
 #include <queue>
 
+#include "../../../metasolver/GlobalVariables.h"
 
 using namespace std;
 
@@ -561,12 +562,28 @@ void KdNode::update_n_best_solution(double &LB,const KdNode* nodo,double eval,in
 
 	  best_solutions.insert(make_pair(eval, nodo->getKdData()));//positivo, de peor a mejor
 
-	  if(best_solutions.size()>n+1){ cout << "error!" << endl; exit(1); };
+	  //if(best_solutions.size()>n+1){ cout << "error!" << endl; exit(1); };
 
-      if(best_solutions.size()==n+1)
-    	  best_solutions.erase(best_solutions.begin()); //se elimina la peor
+	  int sz=best_solutions.size();
+	  //cout << sz << endl;
+	  if(sz>n){
 
-      if(best_solutions.size()==n)
+		  for(auto sol : best_solutions){
+		     if(sz==n){
+		    	 if(sol.first!=LB)
+		         	 while(best_solutions.size()>n)
+		         		 best_solutions.erase(best_solutions.begin());
+		    	 else
+		    		 break;
+		     }
+		     sz--;
+		  }
+	  }
+/*
+	  if(best_solutions.size()==n+1)
+		  best_solutions.erase(best_solutions.begin());
+*/
+      if(best_solutions.size()>=n)
           LB=best_solutions.begin()->first;
 
 }
@@ -599,6 +616,8 @@ bool KdNode::satisfy(const long *minpoint,const long *maxpoint) const{
   return true;
 }
 
+
+
 int KdNode::nn=0;//que es esto , un contador???? si
 
 void KdNode::search(const long* minpoint, const long* maxpoint,
@@ -617,7 +636,7 @@ void KdNode::search(const long* minpoint, const long* maxpoint,
 	double LB=0.0;//el valor del mejor nodo evaluado hasta el momento
 
 	while(L.size()!=0){
-		//KdNode::nn++;
+		//global::n_eval++;
 
 		const KdNode* nodo = L.top();
 		L.pop();
@@ -631,23 +650,24 @@ void KdNode::search(const long* minpoint, const long* maxpoint,
 
 		cout << "node_ub:" << node_ub << endl;
 		 */
+		//cout << "node_ub:" << nodo->ub << endl;
 
-		if(nodo->ub<=LB) return;
+		if(nodo->ub<LB) return;
 
 
 		if(nodo->satisfy(minpoint, maxpoint)){
 			double eval=nodo->getKdData()->eval();
-			if(eval>LB)
+			if(eval>=LB)
 				update_n_best_solution(LB, nodo, eval, n, best_solutions);
 		}
 
         if(nodo->gtChild){
         	compute_ub(nodo->gtChild, minpoint, maxpoint);
-        	if(nodo->gtChild->ub > LB) L.push(nodo->gtChild);
+        	if(nodo->gtChild->ub >= LB && nodo->gtChild->ub!=0) L.push(nodo->gtChild);
         }
         if(nodo->ltChild){
         	compute_ub(nodo->ltChild, minpoint, maxpoint);
-        	if(nodo->ltChild->ub > LB) L.push(nodo->ltChild);
+        	if(nodo->ltChild->ub >= LB && nodo->ltChild->ub!=0) L.push(nodo->ltChild);
         }
 
 	}
