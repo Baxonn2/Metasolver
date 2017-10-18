@@ -7,12 +7,13 @@ INCLUDE_DIRECTORIES(
 lib/bullet-2.80/src
 metasolver
 metasolver/strategies/
+problems/clp/plugins/kdtree
+metasolver/plugins/mop/strategies/
 problems/clp/containers
 problems/clp/objects2
 problems/clp/evaluators
 problems/clp
-problems/clp/plugins/kdtree
-metasolver/plugins/mop/strategies/
+problems/scp
 )
 
 LINK_DIRECTORIES(
@@ -67,12 +68,20 @@ problems/clp/plugins/kdtree/kdNode.cpp
 problems/clp/plugins/kdtree/BlockSet.cpp 
 )
 
+ADD_LIBRARY(
+scp
+problems/scp/scpState.cpp 
+)
 
 ADD_EXECUTABLE(CLP2017 problems/clp/main_clp.cpp)
+
+#ADD_EXECUTABLE(SCP-test problems/clp/scp_test.cpp)
 
 #ADD_EXECUTABLE(CLP_MOP problems/clp/test_clp_mop.cpp)
 
 target_link_libraries(CLP2017 bsg clp clp_kdtree)
+
+#target_link_libraries(SCP-test bsg scp)
 
 #target_link_libraries(CLP_MOP bsg bsg_mop clp)
  

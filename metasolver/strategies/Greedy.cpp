@@ -9,10 +9,16 @@
 
 namespace clp {
 
+virtual Action* Greedy::best_action(State& s){
+	list< Action* > actions;
+	if(s.get_best_actions(actions,1)) return *actions.begin();
+	else return NULL;
+}
+
 list<State*> Greedy::next(list<State*>& S) {
 	State& s= **S.begin();
 
-	Action* action = s.best_action();
+	Action* action = best_action(s);
 
 	if(action){
 		//std::cout << "selected box:" << action->block << endl;

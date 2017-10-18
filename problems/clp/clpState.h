@@ -63,7 +63,7 @@ public:
 		return st;
 	}
 
-	virtual State* create_neighbor(State* s0);
+	virtual State* partial_restart(const State* s0) const;
 
 	friend clpState* new_state(string file, int instance, double min_fr, int max_bl, int f);
 

@@ -24,7 +24,7 @@ class Action;
  */
 class ActionEvaluator {
 public:
-	ActionEvaluator(double r) : r(r) { };
+	ActionEvaluator(double r=0.0) : r(r) { };
 
 	virtual ~ActionEvaluator() { }
 
@@ -32,7 +32,9 @@ public:
 
 		double eval=eval_action(s, a);
 		double ran=(r>0.0)? ((double) rand() / (double) RAND_MAX) : 1.0;
-		return (eval * pow(ran, r));
+
+		if(r==0.0) return eval;
+		else return (eval * pow(ran, r));
 	}
 
 	virtual double eval_action(const State& s, const Action& a) =0;

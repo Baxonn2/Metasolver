@@ -78,7 +78,7 @@ void clpState::update_supports(const AABB* block,
         }
 }
 
-State* clpState::create_neighbor(State* s0){
+State* clpState::partial_restart(const State* s0) const{
 	clpState* s1=(clpState*) s0->copy();
 
 	int n=path.size()/2;

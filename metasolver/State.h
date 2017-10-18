@@ -45,6 +45,9 @@ public:
 
 	State() : parent (NULL), root(false), evl(NULL) {}
 
+	/**
+	 * Clone the state
+	 */
 	virtual State* copy(bool root=false) const = 0;
 
 	virtual void set_evaluator(ActionEvaluator* _evl){
@@ -57,7 +60,7 @@ public:
 			path.push_back((*it)->clone());
 	}
 
-	virtual State* create_neighbor(State* s0){
+	virtual State* partial_restart(const State* s0=NULL) const{
 		return NULL;
 	}
 
@@ -92,12 +95,6 @@ public:
 	   // std::random_shuffle ( path.begin(), path.end() );
 	}
 
-
-	virtual Action* best_action(){
-		list< Action* > actions;
-		if(get_best_actions(actions,1)) return *actions.begin();
-		else return NULL;
-	}
 
 	virtual int get_best_actions(list< Action* >& bactions, int n){
 

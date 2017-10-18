@@ -24,6 +24,8 @@ public:
 	 */
 	virtual list<State*> next(list<State*>& S) ;
 
+	virtual Action* best_action(State& S);
+
 };
 
 
