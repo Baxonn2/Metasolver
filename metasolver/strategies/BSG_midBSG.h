@@ -16,13 +16,13 @@
 
 using namespace std;
 
-namespace clp {
+namespace metasolver {
 
 class BSG_midBSG : public BSG {
 public:
 
-	BSG_midBSG(SearchStrategy& greedy, int beams, double p_elite=0.0,
-			int max_level_size=0) :	BSG(greedy, beams, p_elite, max_level_size) { }
+	BSG_midBSG(ActionEvaluator* evl, SearchStrategy& greedy, int beams, double p_elite=0.0,
+			int max_level_size=0) :	BSG(evl, greedy, beams, p_elite, max_level_size) { }
 
 
 	virtual ~BSG_midBSG() { }
@@ -33,7 +33,7 @@ public:
 	 */
 	virtual double run(State& s, double tl=99999.9, clock_t bt=clock()){
 
-		State* s0=s.copy();
+		State* s0=s.clone();
 
 		list<State*> S;
 
@@ -42,7 +42,7 @@ public:
 	    map<double, pair<State*, State*> >::iterator state_action=state_actions.begin();
 
         for(int i=0; state_action!=state_actions.end();i++, state_action++){
-        	State* s1=state_action->second.second->create_neighbor(s0);
+        	State* s1=state_action->second.second->partial_restart(s0);
 
        	    state_action->second.first = s1;
        	    S.push_back(s1);

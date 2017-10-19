@@ -108,7 +108,7 @@ protected:
 	 	spaces(new SpaceSet(*b.spaces, *this)), blocks(new AABBList(*b.blocks)), total_weight(b.total_weight) {	}
 
 
-    void MatLab_printR(int i=1, int j=1, double R=0.0, double G=0.0, double B=0.0, double alpha=1.0, Vector3 mins=Vector3(0,0,0)) const{
+    void MatLab_printR(int i=1, int j=1, double R=0.0, double G=0.0, double B=0.0, double alpha=0.8, Vector3 mins=Vector3(0,0,0)) const{
     	int ii=i;
     	if(i>1 && n_boxes==1)
     		MatLab_print(i,j,R,G,B, alpha, mins);

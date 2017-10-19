@@ -10,7 +10,8 @@
 
 #include "State.h"
 
-using namespace clp;
+
+using namespace metasolver;
 
 namespace scp {
 
@@ -33,7 +34,7 @@ public:
 	/*
 	 * copy the state
 	 */
-	scpState(const scpState& S, bool root) : State(S,root), cols(S.cols), col2rows(S.col2rows){
+	scpState(const scpState& S) : State(S), cols(S.cols), col2rows(S.col2rows){
 
 	}
 
@@ -43,8 +44,8 @@ public:
 
 
 	virtual State* copy(bool root=false) const{
-		State* st=new scpState(*this, root);
-		return st;
+		//State* st=new scpState(*this);
+		//return st;
 	}
 
 	//TODO: obtiene el valor de la funcion objetivo

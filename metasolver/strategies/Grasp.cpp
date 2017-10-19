@@ -13,9 +13,9 @@ namespace metasolver {
  * TODO: random roulette, actiones no seleccionadas deben eliminarse con delete
  *
  */
-virtual Action* best_action(State& s){
+virtual Action* Grasp::best_action(State& s){
 
-	if(!s.evl) {
+	if(!evl) {
 		cout << "The function State::get_best_actions should be implemented or an "
 				<< "ActionEvaluator should be provided" << endl;
 		exit(0);
@@ -26,7 +26,7 @@ virtual Action* best_action(State& s){
 
 	while(!actions.empty()){
 		Action* a=actions.front(); actions.pop_front();
-		double eval = s.evl->eval_action(s,*a);
+		double eval = evl->eval_action(s,*a);
 
 	}
 

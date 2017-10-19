@@ -7,13 +7,8 @@
 
 #include "Greedy.h"
 
-namespace clp {
+namespace metasolver {
 
-virtual Action* Greedy::best_action(State& s){
-	list< Action* > actions;
-	if(s.get_best_actions(actions,1)) return *actions.begin();
-	else return NULL;
-}
 
 list<State*> Greedy::next(list<State*>& S) {
 	State& s= **S.begin();

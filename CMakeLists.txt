@@ -36,6 +36,7 @@ LINK_LIBRARIES(
 
 ADD_LIBRARY(
 bsg
+metasolver/SearchStrategy.cpp  
 metasolver/GlobalVariables.cpp
 metasolver/strategies/BSG.cpp
 metasolver/strategies/Greedy.cpp  
